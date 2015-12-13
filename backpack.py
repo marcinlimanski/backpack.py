@@ -1,4 +1,5 @@
 import uuid
+import json
 
 #Marcin Limanski (13.12.2015) backpack module
 class Storage():
@@ -21,15 +22,23 @@ class Storage():
 class Backpack(Storage):
 	empCount = 0
 	"""docstring for Backpack"""
-	def __init__(self):
+	def __init__(self, name):
+		#init the JsonParse object to handle json object
+		self.jsonParser = JsonParser()
+		self.name = name
+		self._id = uuid.uuid1()
+		self.backpackObject = {}
 		Backpack.empCount += 1
 	#Implementing the inheritend save method 
-	def putIn(self, name):
-		newID = IdGen()
-		id = newID.generateID()
-		print('Save funstion is working ' + name)
-		print(type(id))
-
+	def putIn(self, object):
+		#TODO: Check if object is of the right format
+		
+		#TODO: check if the backpack object file exists, if not create one and save the obejct
+		
+		#TODO: if backpack exists then load it, deserilaise it to json, append new object to the back pack
+		#then save it to the file
+		return
+		
 	#Implementing the inhereted delete function
 	def takeOut(self):
 		print('Delete function is working')
@@ -38,13 +47,25 @@ class Backpack(Storage):
 	def lookFor(self):
 		print('Find function is working')
 
-class IdGen():
-	empCount = 0
-	"""docstring for IdGen"""
-	def __init__(self):
-		IdGen.empCount += 1
-	#Retruns a unique id based on the host ID and current time
-	def generateID(self):
-		return uuid.uuid1()
+class JsonParser():
+	"""docstring for JsonParser"""
+	#This method will take in a string and retrun a json object 
+	def decode(self):
+		print('Decoding json works')
+		return
+	#This method will take json object and convert it to string
+	def encode(self):
+		print('Encoding json works')
+		return
+
+	def formatCheck(self, object):
+		try:
+		    json_object = json.loads(object)
+		except ValueError, e:
+		    return False
+		return True
+		
+		
+
 		
 		
