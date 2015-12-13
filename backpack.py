@@ -1,18 +1,20 @@
 #Marcin Limanski (13.12.2015) backpack module
 class Storage():
+	empCount = 0
 	"""docstring for Storage"""
+	def __init__(self):
+		Backpack.empCount += 1
 	#This function will save a given object
-	def save(self, name):
-		print('Save funstion is working ' + name)
+	def putIn(self):
+		return
 
 	#This function will delete the object 
-	def delete(self):
-		print('Delete function is working')
+	def takeOut(self):
+		return
 
 	#This function will find the object in storage
-	def find(self):
-		print('Find function is working')
-
+	def lookFor(self):
+		return
 
 class Backpack(Storage):
 	empCount = 0
@@ -21,14 +23,21 @@ class Backpack(Storage):
 		Backpack.empCount += 1
 	#Implementing the inheritend save method 
 	def putIn(self, name):
-		self.save(name)		
+		print('Save funstion is working ' + name)
 
 	#Implementing the inhereted delete function
 	def takeOut(self, ):
-		delete()
+		print('Delete function is working')
 
 	#Implementing the inhereted
 	def lookFor(self, ):
-		find()
+		print('Find function is working')
 
+class IdGen():
+	"""docstring for IdGen"""
+	def __init__(self, name, time):
+		self.name = name
+		self.time = time
+
+		
 		
