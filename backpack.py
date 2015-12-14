@@ -26,8 +26,8 @@ class Backpack(Storage):
 		#init the JsonParse object to handle json object
 		self.jsonParser = JsonParser()
 		self.name = name
-		self._id = uuid.uuid1()
-		self.backpackObject = {}
+		self._id = str(uuid.uuid1())
+		self.backpackObject = {'_id':self._id, 'name':self.name}
 		Backpack.empCount += 1
 	#Implementing the inheritend save method 
 	def putIn(self, object):
