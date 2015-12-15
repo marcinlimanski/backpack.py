@@ -20,7 +20,7 @@ class Storage():
 		return
 
 	#This function will find the object in storage
-	def showAll(self):
+	def showAllItems(self):
 		return
 
 class NewBackpack(Storage):
@@ -35,8 +35,9 @@ class NewBackpack(Storage):
 		NewBackpack.empCount += 1
 	#Implementing the inheritend save method 
 	def putIn(self, name, item):
-		#TODO: Check if object exists
+		#Constructing and appending the new object to the backpack
 		self.backpackObject['items'].append({'_id':str(uuid.uuid1()),'name':name, 'item':item})
+		
 		#TODO: check if the backpack object file exists, if not create one and save the obejct
 		
 		#TODO: if backpack exists then load it, deserilaise it to json, append new object to the back pack
@@ -52,7 +53,7 @@ class NewBackpack(Storage):
 		print('Find function is working')
 
 		#This function will find the object in storage
-	def showAll(self):
+	def showAllItems(self):
 		return self.backpackObject
 
 class PickABackpack(Storage):
@@ -73,7 +74,7 @@ class PickABackpack(Storage):
 		return
 
 	#This function will find the object in storage
-	def showAll(self):
+	def showAllItems(self):
 		return
 
 class JsonParser():
