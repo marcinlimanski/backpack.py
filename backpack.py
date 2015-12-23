@@ -10,11 +10,9 @@ class Storage():
 	#This function will save a given object
 	def putIn(self):
 		return
-
 	#This function will delete the object 
 	def takeOut(self):
 		return
-
 	#This function will find the object in storage
 	def lookFor(self):
 		return
@@ -31,44 +29,61 @@ class BackpackAttributes():
 		self._backpackObject = {'_id':self._id, 'name':self._name}
 		self._backpackItems = {}
 
+class ErrorMessageHandler():
+	def invalidType(self):
+		print('Invalid item type: expected a string')
+		return
+
+	def itemExistsInBackpack(self, name):
+		print('Item: '+ str(name)+', already exists in the backpack')
+		return
+		
+
+#Init the backpack Attributes
 class NewBackpack(Storage):
 	empCount = 0
 	"""docstring for NewBackpack"""
 	def __init__(self, name):
 		self.name = name
-		self.newBackpackAttributes = BackpackAttributes(self.name)
+		self._newBackpackAttributes = BackpackAttributes(self.name)
+		self._errorMessageHandler = ErrorMessageHandler()
 		#init the JsonParse object to handle json object
 		NewBackpack.empCount += 1
 	#Implementing the inheritend save method 
 	def putIn(self, name , item):
 		#Constructing and appending the new object to the backpack
 		if(type(name) is str):
-			if(name in self.newBackpackAttributes._backpackItems):
-				print('This name already exists in backpack: ' + str(name))
+			if(name in self._newBackpackAttributes._backpackItems):
+				self._errorMessageHandler.itemExistsInBackpack(name)
 			else:
-				self.newBackpackAttributes._backpackItems[name] = item;
+				self._newBackpackAttributes._backpackItems[name] = item;
 		else:
-			print('Invalid item type: expected a string')
-		return
+			self._errorMessageHandler.invalidType()
 		
 	#Implementing the inhereted delete function
 	def takeOut(self, name):
 		if(type(name) is str):
-			if(name in self.newBackpackAttributes._backpackItems):
-				del self.newBackpackAttributes._backpackItems[name]
+			if(name in self._newBackpackAttributes._backpackItems):
+				del self._newBackpackAttributes._backpackItems[name]
 			else:
-				print('Item: ' + str(name) + ' does not exists')
+				self._errorMessageHandler.itemExistsInBackpack(name)
 		else:
-			print('Invalid item type: expected a string')
-		return
+			self._errorMessageHandler.invalidType()
 
 	#Implementing the inhereted
-	def lookFor(self):
-		print('Find function is working')
+	def lookFor(self, name):
+		if(type(name) is str):
+			if(name in self._newBackpackAttributes._backpackItems):
+				print(self._newBackpackAttributes._backpackItems[name])
+			else:
+				self._errorMessageHandler.itemExistsInBackpack(name)
+		else:
+			self._errorMessageHandler.invalidType()
+		
 
-		#This function will find the object in storage
+	#This function will find the object in storage
 	def showAllItems(self):
-		return self.newBackpackAttributes._backpackItems
+		return self._newBackpackAttributes._backpackItems
 
 class PickABackpack(Storage):
 	empCount = 0
