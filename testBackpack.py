@@ -13,9 +13,7 @@ def testBackpackMultiInstance():
 	myBackpack = backpack.NewBackpack('myBackpack')
 
 def testBackpackPutInMethod():
-
-
-
+	
 testClassInit()
 
 
