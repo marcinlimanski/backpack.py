@@ -18,7 +18,6 @@ class Storage():
 	#This function will find the object in storage
 	def lookFor(self):
 		return
-
 	#This function will find the object in storage
 	def showAllItems(self):
 		return
@@ -28,20 +27,19 @@ class NewBackpack(Storage):
 	"""docstring for NewBackpack"""
 	def __init__(self, name):
 		#init the JsonParse object to handle json object
-		self.jsonParser = JsonParser()
-		self.name = name
+		self._jsonParser = JsonParser()
+		self._name = name
 		self._id = str(uuid.uuid1())
-		self.backpackObject = {'_id':self._id, 'name':self.name, 'items':[]}
+		self._backpackObject = {'_id':self._id, 'name':self._name}
+		self._backpackItems = {}
 		NewBackpack.empCount += 1
 	#Implementing the inheritend save method 
-	def putIn(self, name, item):
+	def putIn(self, name , item):
 		#Constructing and appending the new object to the backpack
-		self.backpackObject['items'].append({'_id':str(uuid.uuid1()),'name':name, 'item':item})
-		
-		#TODO: check if the backpack object file exists, if not create one and save the obejct
-		
-		#TODO: if backpack exists then load it, deserilaise it to json, append new object to the back pack
-		#then save it to the file
+		if(name in self._backpackItems):
+			print('This name already exists in backpack: ' + str(name))
+		else:
+			self._backpackItems[name] = item; 
 		return
 		
 	#Implementing the inhereted delete function
@@ -54,7 +52,7 @@ class NewBackpack(Storage):
 
 		#This function will find the object in storage
 	def showAllItems(self):
-		return self.backpackObject
+		return self._backpackItems
 
 class PickABackpack(Storage):
 	empCount = 0
