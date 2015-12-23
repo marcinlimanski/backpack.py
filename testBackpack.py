@@ -1,14 +1,21 @@
 # Import module backpack
 import backpack
 
-myBackpack = backpack.NewBackpack('myBackpack');
+myBackpack = backpack.NewBackpack('myBackpack')
 
-myBackpack.putIn('marcin', 'dasd')
-myBackpack.putIn('marcin', 'dasd')
-myBackpack.putIn('asdsa', 322)
-myBackpack.putIn('asdsa', 322)
+def testClassInit():
+	if(myBackpack._name == 'myBackpack'):
+		print('Passed: testClassInit')
+	else:
+		print('FAILED: testClassInit')
+
+def testBackpackMultiInstance():
+	myBackpack = backpack.NewBackpack('myBackpack')
+
+def testBackpackPutInMethod():
 
 
-print(myBackpack.showAllItems())
+
+testClassInit()
 
 

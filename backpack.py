@@ -22,29 +22,45 @@ class Storage():
 	def showAllItems(self):
 		return
 
+#Init the backpack Attributes
+class BackpackAttributes():
+	def __init__(self, name):
+		self._name = name
+		self._jsonParser = JsonParser()
+		self._id = str(uuid.uuid1())
+		self._backpackObject = {'_id':self._id, 'name':self._name}
+		self._backpackItems = {}
+
 class NewBackpack(Storage):
 	empCount = 0
 	"""docstring for NewBackpack"""
 	def __init__(self, name):
+		self.name = name
+		self.newBackpackAttributes = BackpackAttributes(self.name)
 		#init the JsonParse object to handle json object
-		self._jsonParser = JsonParser()
-		self._name = name
-		self._id = str(uuid.uuid1())
-		self._backpackObject = {'_id':self._id, 'name':self._name}
-		self._backpackItems = {}
 		NewBackpack.empCount += 1
 	#Implementing the inheritend save method 
 	def putIn(self, name , item):
 		#Constructing and appending the new object to the backpack
-		if(name in self._backpackItems):
-			print('This name already exists in backpack: ' + str(name))
+		if(type(name) is str):
+			if(name in self.newBackpackAttributes._backpackItems):
+				print('This name already exists in backpack: ' + str(name))
+			else:
+				self.newBackpackAttributes._backpackItems[name] = item;
 		else:
-			self._backpackItems[name] = item; 
+			print('Invalid item type: expected a string')
 		return
 		
 	#Implementing the inhereted delete function
-	def takeOut(self):
-		print('Delete function is working')
+	def takeOut(self, name):
+		if(type(name) is str):
+			if(name in self.newBackpackAttributes._backpackItems):
+				del self.newBackpackAttributes._backpackItems[name]
+			else:
+				print('Item: ' + str(name) + ' does not exists')
+		else:
+			print('Invalid item type: expected a string')
+		return
 
 	#Implementing the inhereted
 	def lookFor(self):
@@ -52,7 +68,7 @@ class NewBackpack(Storage):
 
 		#This function will find the object in storage
 	def showAllItems(self):
-		return self._backpackItems
+		return self.newBackpackAttributes._backpackItems
 
 class PickABackpack(Storage):
 	empCount = 0
