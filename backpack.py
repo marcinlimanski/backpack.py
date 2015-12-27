@@ -22,15 +22,16 @@ class Storage():
 	#This function will find the object in storage
 	def showAllItems(self):
 		return
+	#This function will allow to change the name of the backpack
+	def changeName(self):
+		return
 
 #Init the backpack Attributes
 class BackpackAttributes():
 	def __init__(self, name):
 		self._name = name
-		self.__jsonParser = JsonParser()
 		self._id = str(uuid.uuid1())
-		self._backpackObject = {'_id':self._id, 'name':self._name}
-		self._backpackItems = {}
+		self.backpackItems = {}
 
 class ErrorMessageHandler():
 	def invalidType(self):
@@ -47,8 +48,10 @@ class NewBackpack(Storage):
 	"""docstring for NewBackpack"""
 	def __init__(self, name):
 		self.name = name
+		self.jsonParser = JsonParser()
 		self.newBackpackAttributes = BackpackAttributes(self.name)
 		self.errorMessageHandler = ErrorMessageHandler()
+		self.backpackTools = BackpackTools()
 		NewBackpack.empCount += 1
 
 	#This function will show backpack id
@@ -62,18 +65,18 @@ class NewBackpack(Storage):
 	def putIn(self, name , item):
 		#Constructing and appending the new object to the backpack
 		if(type(name) is str):
-			if(name in self.newBackpackAttributes._backpackItems):
+			if(name in self.newBackpackAttributes.backpackItems):
 				self.errorMessageHandler.itemExistsInBackpack(name)
 			else:
-				self.newBackpackAttributes._backpackItems[name] = item;
+				self.newBackpackAttributes.backpackItems[name] = item;
 		else:
 			self.errorMessageHandler.invalidType()
 		
 	#Implementing the inhereted delete function
 	def takeOut(self, name):
 		if(type(name) is str):
-			if(name in self.newBackpackAttributes._backpackItems):
-				del self.newBackpackAttributes._backpackItems[name]
+			if(name in self.newBackpackAttributes.backpackItems):
+				del self.newBackpackAttributes.backpackItems[name]
 			else:
 				self.errorMessageHandler.itemExistsInBackpack(name)
 		else:
@@ -82,8 +85,8 @@ class NewBackpack(Storage):
 	#Implementing the inhereted
 	def lookFor(self, name):
 		if(type(name) is str):
-			if(name in self.newBackpackAttributes._backpackItems):
-				print(self.newBackpackAttributes._backpackItems[name])
+			if(name in self.newBackpackAttributes.backpackItems):
+				print(self.newBackpackAttributes.backpackItems[name])
 			else:
 				self.errorMessageHandler.itemExistsInBackpack(name)
 		else:
@@ -92,12 +95,20 @@ class NewBackpack(Storage):
 
 	#This function will find the object in storage
 	def showAllItems(self):
-		return self.newBackpackAttributes._backpackItems
+		return self.newBackpackAttributes.backpackItems
 
-	#This function will concatinait the _backpackItems with _backpackObject, 
+	#This function will allow to change the name of the backpack
+	def changeName(self, newBackpackName):
+		self.newBackpackAttributes._name = newBackpackName
+		return
+
+	#This function will concatinait the backpackItems with backpackObject, 
 	#encode it in to json format and save it to local storage
 	def saveBackpack(self):
-		return
+		self.jsonParser.encode(self.backpackTools.objectConcatination(self.newBackpackAttributes._id,
+		 																self.newBackpackAttributes._name
+		 																, self.newBackpackAttributes.backpackItems), 
+																		self.newBackpackAttributes._name)
 
 class PickABackpack(Storage):
 	"""docstring for PickBackpack"""
@@ -127,6 +138,15 @@ class PickABackpack(Storage):
 	def showAllItems(self):
 		return
 
+class BackpackTools():
+	"""docstring for BackpackTools"""
+	#Concatinating the backpack object to be then saved
+	def objectConcatination(self, objectId, objectName, objectItems):
+		if(type(objectId) is str) and (type(objectName) is str) and (type(objectItems) is dict):
+			backpackObject = {'_id':objectId, 'name':objectName, 'items':objectItems}
+			return backpackObject
+		 
+
 class JsonParser():
 	"""docstring for JsonParser"""
 	#This method will take in a string and retrun a json object 
@@ -134,16 +154,15 @@ class JsonParser():
 		print('Decoding json works')
 		return
 	#This method will take json object and convert it to string
-	def encode(self):
-		print('Encoding json works')
-		return
-
-	def formatCheck(self, object):
+	def encode(self, dataObject, fileName, path = '/'):
 		try:
-		    json_object = json.loads(object)
-		except ValueError, e:
-		    return False
-		return True
+		    fo = open('myfile.json', 'w+')
+		    fo.write(json.dumps(dataObject))
+		    fo.close()
+		except IOError as e:
+		    print "I/O error({0}): {1}".format(e.errno, e.strerror)
+
+
 		
 		
 

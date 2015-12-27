@@ -1,5 +1,6 @@
 # Import module backpack
 import backpack
+import json
 
 myBackpack = backpack.NewBackpack('myBackpack')
 
@@ -7,9 +8,12 @@ myBackpack = backpack.NewBackpack('myBackpack')
 myBackpack.putIn('marcin1', 3123)
 myBackpack.putIn('marcin', 3123)
 
-print(myBackpack.showAllItems())
-
 myBackpack.takeOut('marcin')
 print(myBackpack.showAllItems())
 
-print(myBackpack.empCount)
+myBackpack.changeName('marcinBackpack')
+
+print(myBackpack.showName())
+
+print(myBackpack.saveBackpack())
+
