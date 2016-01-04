@@ -4,55 +4,12 @@ import json
 
 class Storage():
 
-	#This function will show backpack id
-	def showId(self):
-		return
-	#This function will show backpack name
-	def showName(self):
-		return
-	#This function will save a given object
-	def putIn(self):
-		return
-	#This function will delete the object 
-	def takeOut(self):
-		return
-	#This function will find the object in storage
-	def lookFor(self):
-		return
-	#This function will find the object in storage
-	def showAllItems(self):
-		return
-	#This function will allow to change the name of the backpack
-	def changeName(self):
-		return
-
-#Init the backpack Attributes
-class BackpackAttributes():
-	def __init__(self, name):
-		self._name = name
-		self._id = str(uuid.uuid1())
-		self.backpackItems = {}
-
-class ErrorMessageHandler():
-	def invalidType(self):
-		print('Invalid item type: expected a string')
-		return
-
-	def itemExistsInBackpack(self, name):
-		print('Item: '+ str(name)+', already exists in the backpack')
-		return
-		
-#Init the backpack Attributes
-class NewBackpack(Storage):
-	empCount = 0
-	"""docstring for NewBackpack"""
-	def __init__(self, name):
-		self.name = name
-		self.jsonParser = JsonParser()
-		self.newBackpackAttributes = BackpackAttributes(self.name)
-		self.errorMessageHandler = ErrorMessageHandler()
-		self.backpackTools = BackpackTools()
-		NewBackpack.empCount += 1
+	def __init__(self):
+		self.name = 'defaultBackpack'
+		self.jsonParser = object
+		self.newBackpackAttributes = object
+		self.errorMessageHandler = object
+		self.backpackTools = object
 
 	#This function will show backpack id
 	def showId(self):
@@ -107,8 +64,36 @@ class NewBackpack(Storage):
 	def saveBackpack(self):
 		self.jsonParser.encode(self.backpackTools.objectConcatination(self.newBackpackAttributes._id,
 		 																self.newBackpackAttributes._name
-		 																, self.newBackpackAttributes.backpackItems), 
+		 																,self.newBackpackAttributes.backpackItems), 
 																		self.newBackpackAttributes._name)
+
+#Init the backpack Attributes
+class BackpackAttributes():
+	def __init__(self, name):
+		self._name = name
+		self._id = str(uuid.uuid1())
+		self.backpackItems = {}
+
+class ErrorMessageHandler():
+	def invalidType(self):
+		print('Invalid item type: expected a string')
+		return
+
+	def itemExistsInBackpack(self, name):
+		print('Item: '+ str(name)+', already exists in the backpack')
+		return
+		
+#Init the backpack Attributes
+class NewBackpack(Storage):
+	empCount = 0
+	"""docstring for NewBackpack"""
+	def __init__(self, name):
+		self.name = name
+		self.jsonParser = JsonParser()
+		self.newBackpackAttributes = BackpackAttributes(self.name)
+		self.errorMessageHandler = ErrorMessageHandler()
+		self.backpackTools = BackpackTools()
+		NewBackpack.empCount += 1
 
 class PickABackpack(Storage):
 	"""docstring for PickBackpack"""
@@ -145,7 +130,6 @@ class BackpackTools():
 		if(type(objectId) is str) and (type(objectName) is str) and (type(objectItems) is dict):
 			backpackObject = {'_id':objectId, 'name':objectName, 'items':objectItems}
 			return backpackObject
-		 
 
 class JsonParser():
 	"""docstring for JsonParser"""
@@ -155,6 +139,7 @@ class JsonParser():
 		return
 	#This method will take json object and convert it to string
 	def encode(self, dataObject, fileName, path = '/'):
+		#Split this method to two parts
 		try:
 		    fo = open('myfile.json', 'w+')
 		    fo.write(json.dumps(dataObject))
