@@ -6,15 +6,15 @@ class Storage():
 
 	def __init__(self):
 		self.name = 'defaultBackpack'
-		self.jsonParser = object
-		self.newBackpackAttributes = object
-		self.errorMessageHandler = object
-		self.backpackTools = object
+		self.jsonParser = JsonParser()
+		self.newBackpackAttributes = BackpackAttributes(self.name)
+		self.errorMessageHandler = ErrorMessageHandler()
+		self.backpackTools = BackpackTools()
 
-	#This function will show backpack id
+	#This method will show backpack id
 	def showId(self):
 		return self.newBackpackAttributes._id
-	#This function will show backpack name
+	#This method will show backpack name
 	def showName(self):
 		return self.newBackpackAttributes._name
 
@@ -29,7 +29,7 @@ class Storage():
 		else:
 			self.errorMessageHandler.invalidType()
 		
-	#Implementing the inhereted delete function
+	#Implementing the inhereted delete method
 	def takeOut(self, name):
 		if(type(name) is str):
 			if(name in self.newBackpackAttributes.backpackItems):
@@ -50,22 +50,43 @@ class Storage():
 			self.errorMessageHandler.invalidType()
 		
 
-	#This function will find the object in storage
+	#This method will find the object in storage
 	def showAllItems(self):
 		return self.newBackpackAttributes.backpackItems
 
-	#This function will allow to change the name of the backpack
+	#This method will allow to change the name of the backpack
 	def changeName(self, newBackpackName):
 		self.newBackpackAttributes._name = newBackpackName
 		return
 
-	#This function will concatinait the backpackItems with backpackObject, 
-	#encode it in to json format and save it to local storage
+#Init the backpack Attributes
+class Backpack(Storage):
+	empCount = 0
+	"""docstring for Backpack"""
+	def __init__(self, name = 'defaultBackpack'):
+		self.name = name
+		self.jsonParser = JsonParser()
+		self.newBackpackAttributes = BackpackAttributes(self.name)
+		self.errorMessageHandler = ErrorMessageHandler()
+		self.backpackTools = BackpackTools()
+		Backpack.empCount += 1
+
+	#This method is used to save the backpack in local storage
 	def saveBackpack(self):
 		self.jsonParser.encode(self.backpackTools.objectConcatination(self.newBackpackAttributes._id,
 		 																self.newBackpackAttributes._name
 		 																,self.newBackpackAttributes.backpackItems), 
 																		self.newBackpackAttributes._name)
+	def loadBackpack(self, filePath):
+		return
+
+class BackpackTools():
+	"""docstring for BackpackTools"""
+	#Concatinating the backpack object to be then saved
+	def objectConcatination(self, objectId, objectName, objectItems):
+		if(type(objectId) is str) and (type(objectName) is str) and (type(objectItems) is dict):
+			backpackObject = {'_id':objectId, 'name':objectName, 'items':objectItems}
+			return backpackObject
 
 #Init the backpack Attributes
 class BackpackAttributes():
@@ -83,54 +104,6 @@ class ErrorMessageHandler():
 		print('Item: '+ str(name)+', already exists in the backpack')
 		return
 		
-#Init the backpack Attributes
-class NewBackpack(Storage):
-	empCount = 0
-	"""docstring for NewBackpack"""
-	def __init__(self, name):
-		self.name = name
-		self.jsonParser = JsonParser()
-		self.newBackpackAttributes = BackpackAttributes(self.name)
-		self.errorMessageHandler = ErrorMessageHandler()
-		self.backpackTools = BackpackTools()
-		NewBackpack.empCount += 1
-
-class PickABackpack(Storage):
-	"""docstring for PickBackpack"""
-	def __init__(self, name):
-		self.name = name
-
-	#This function will show backpack id
-	def showId(self):
-		return
-	#This function will show backpack name
-	def showName(self):
-		return
-
-	#Implementing the inheritend save method 
-	def putIn(self, object):
-		return
-		
-	#Implementing the inhereted delete function
-	def takeOut(self):
-		print('Delete function is working')
-
-	#Implementing the inhereted
-	def lookFor(self):
-		return
-
-	#This function will find the object in storage
-	def showAllItems(self):
-		return
-
-class BackpackTools():
-	"""docstring for BackpackTools"""
-	#Concatinating the backpack object to be then saved
-	def objectConcatination(self, objectId, objectName, objectItems):
-		if(type(objectId) is str) and (type(objectName) is str) and (type(objectItems) is dict):
-			backpackObject = {'_id':objectId, 'name':objectName, 'items':objectItems}
-			return backpackObject
-
 class JsonParser():
 	"""docstring for JsonParser"""
 	#This method will take in a string and retrun a json object 
@@ -141,7 +114,7 @@ class JsonParser():
 	def encode(self, dataObject, fileName, path = '/'):
 		#Split this method to two parts
 		try:
-		    fo = open('myfile.json', 'w+')
+		    fo = open(fileName+'.json', 'w+')
 		    fo.write(json.dumps(dataObject))
 		    fo.close()
 		except IOError as e:

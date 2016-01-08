@@ -2,7 +2,7 @@
 import backpack
 import json
 
-myBackpack = backpack.NewBackpack('myBackpack')
+myBackpack = backpack.Backpack('myBackpack')
 
 
 myBackpack.putIn('marcin1', 3123)
