@@ -2,8 +2,32 @@
 import uuid
 import json
 
+#Abstract class
 class Storage():
 
+	#This method will show backpack id
+	def showId(self):
+		return
+	#This method will show backpack name
+	def showName(self):
+		return
+	#Implementing the inheritend save method 
+	def putIn(self, name , item):
+		return
+	#Implementing the inhereted delete method
+	def takeOut(self, name):
+		return
+	#Implementing the inhereted
+	def lookFor(self, name):
+		return
+	#This method will find the object in storage
+	def showAllItems(self):
+		return
+	#This method will allow to change the name of the backpack
+	def changeName(self, newBackpackName):
+		return
+
+class BackpackStorage(Storage):
 	def __init__(self):
 		self.name = 'defaultBackpack'
 		self.jsonParser = JsonParser()
@@ -58,9 +82,10 @@ class Storage():
 	def changeName(self, newBackpackName):
 		self.newBackpackAttributes._name = newBackpackName
 		return
+		
 
 #Init the backpack Attributes
-class Backpack(Storage):
+class Backpack(BackpackStorage):
 	empCount = 0
 	"""docstring for Backpack"""
 	def __init__(self, name = 'defaultBackpack'):
@@ -78,7 +103,7 @@ class Backpack(Storage):
 		 																,self.newBackpackAttributes.backpackItems), 
 																		self.newBackpackAttributes._name)
 	def loadBackpack(self, filePath):
-		return
+		self.jsonParser.decode(filePath)
 
 class BackpackTools():
 	"""docstring for BackpackTools"""
@@ -107,11 +132,19 @@ class ErrorMessageHandler():
 class JsonParser():
 	"""docstring for JsonParser"""
 	#This method will take in a string and retrun a json object 
-	def decode(self):
-		print('Decoding json works')
-		return
+	def decode(self, filePath):
+		#Split this method to two parts
+		print(filePath)
+		try:
+			with open('./'+filePath +'.json') as data_file:    
+    				data = json.load(data_file)
+    			print (data['items'])
+    			
+
+		except IOError as e:
+		    print "I/O error({0}): {1}".format(e.errno, e.strerror)
 	#This method will take json object and convert it to string
-	def encode(self, dataObject, fileName, path = '/'):
+	def encode(self, dataObject, fileName, path = './'):
 		#Split this method to two parts
 		try:
 		    fo = open(fileName+'.json', 'w+')
@@ -121,8 +154,14 @@ class JsonParser():
 		    print "I/O error({0}): {1}".format(e.errno, e.strerror)
 
 
-		
-		
-
-		
+#####################backpack.py test########################################
+if __name__ == '__main__':
+	myBackpack = Backpack('myBackpack')
+	myBackpack.putIn('marcin1', 3123)
+	myBackpack.putIn('marcin', 3123)
+	myBackpack.takeOut('marcin')
+	print(myBackpack.showAllItems())
+	print(myBackpack.showName())
+	myBackpack.saveBackpack()
+	myBackpack.loadBackpack('myBackpack')
 		
