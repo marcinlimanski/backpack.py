@@ -32,10 +32,10 @@ class Storage():
 class BackpackStorage(Storage):
 	def __init__(self):
 		self.name = 'defaultBackpack'
-		self.jsonParser = JsonParser()
-		self.newBackpackAttributes = BackpackAttributes(self.name)
-		self.errorMessageHandler = ErrorMessageHandler()
-		self.backpackTools = BackpackTools()
+		self.jsonParser = None
+		self.newBackpackAttributes = None
+		self.errorMessageHandler = None
+		self.backpackTools = None
 
 	#This method will show backpack id
 	def showId(self):
@@ -105,7 +105,10 @@ class Backpack(BackpackStorage):
 		 																,self.newBackpackAttributes.backpackItems), 
 																		self.newBackpackAttributes._name)
 	def loadBackpack(self, filePath):
-		self.jsonParser.decode(filePath)
+		dataObject = self.jsonParser.decode(filePath)
+		self.name = dataObject['name']
+		self.newBackpackAttributes._id = dataObject['_id']
+		self.newBackpackAttributes.backpackItems = dataObject['items']
 
 class BackpackTools():
 	"""docstring for BackpackTools"""
@@ -138,9 +141,9 @@ class JsonParser():
 		#Split this method to two parts
 		print(filePath)
 		try:
-			with open('./'+filePath +'.json') as data_file:    
+			with open('./'+filePath +'.js') as data_file:    
     				data = json.load(data_file)
-    			print (data['items'])
+    			return data
     			
 
 		except IOError as e:
@@ -149,7 +152,7 @@ class JsonParser():
 	def encode(self, dataObject, fileName, path = './'):
 		#Split this method to two parts
 		try:
-		    fo = open(fileName+'.json', 'w+')
+		    fo = open(fileName+'.js', 'w+')
 		    fo.write(json.dumps(dataObject))
 		    fo.close()
 		except IOError as e:
@@ -159,11 +162,13 @@ class JsonParser():
 #####################backpack.py test########################################
 if __name__ == '__main__':
 	myBackpack = Backpack('myBackpack')
-	myBackpack.putIn('marcin1', 3123)
-	myBackpack.putIn('marcin', 3123)
-	myBackpack.takeOut('marcin')
+	myBackpack.loadBackpack('myBackpack')
+	myBackpack.putIn('marcin12', 3123)
+	#myBackpack.putIn('marcin', 3123)
+	#myBackpack.takeOut('marcin')
 	print(myBackpack.showAllItems())
 	print(myBackpack.showName())
-	myBackpack.saveBackpack()
-	myBackpack.loadBackpack('myBackpack')
+	print(myBackpack.showId())
+	#myBackpack.saveBackpack()
+	
 		
