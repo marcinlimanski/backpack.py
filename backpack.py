@@ -2,30 +2,32 @@
 import uuid
 import json
 
+#TODO: Check how to implement interfaces 
+
 #Abstract class
 class Storage():
-
+	"""docstring for Storage"""
 	#This method will show backpack id
 	def showId(self):
-		return
+		raise NotImplementedError( "Should have implemented this" )
 	#This method will show backpack name
 	def showName(self):
-		return
+		raise NotImplementedError( "Should have implemented this" )
 	#Implementing the inheritend save method 
 	def putIn(self, name , item):
-		return
+		raise NotImplementedError( "Should have implemented this" )
 	#Implementing the inhereted delete method
 	def takeOut(self, name):
-		return
+		raise NotImplementedError( "Should have implemented this" )
 	#Implementing the inhereted
 	def lookFor(self, name):
-		return
+		raise NotImplementedError( "Should have implemented this" )
 	#This method will find the object in storage
 	def showAllItems(self):
-		return
+		raise NotImplementedError( "Should have implemented this" )
 	#This method will allow to change the name of the backpack
 	def changeName(self, newBackpackName):
-		return
+		raise NotImplementedError( "Should have implemented this" )
 
 class BackpackStorage(Storage):
 	def __init__(self):
