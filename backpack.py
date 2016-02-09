@@ -114,7 +114,10 @@ class BackpackTools():
 	"""docstring for BackpackTools"""
 	#Concatinating the backpack object to be then saved
 	def objectConcatination(self, objectId, objectName, objectItems):
-		if(type(objectId) is str) and (type(objectName) is str) and (type(objectItems) is dict):
+		print(type(objectId))
+		print(type(objectName))
+		print(type(objectItems))
+		if((type(objectName) is str) and (type(objectItems) is dict)):
 			backpackObject = {'_id':objectId, 'name':objectName, 'items':objectItems}
 			return backpackObject
 
@@ -141,18 +144,17 @@ class JsonParser():
 		#Split this method to two parts
 		print(filePath)
 		try:
-			with open('./'+filePath +'.js') as data_file:    
+			with open('./'+filePath +'.json', 'r+') as data_file:   
     				data = json.load(data_file)
-    			return data
-    			
-
+    				data_file.close()
+    				return data
 		except IOError as e:
 		    print "I/O error({0}): {1}".format(e.errno, e.strerror)
 	#This method will take json object and convert it to string
 	def encode(self, dataObject, fileName, path = './'):
 		#Split this method to two parts
 		try:
-		    fo = open(fileName+'.js', 'w+')
+		    fo = open(fileName+'.json', 'w+')
 		    fo.write(json.dumps(dataObject))
 		    fo.close()
 		except IOError as e:
@@ -162,13 +164,23 @@ class JsonParser():
 #####################backpack.py test########################################
 if __name__ == '__main__':
 	myBackpack = Backpack('myBackpack')
+	
+	
+	#print(myBackpack.showAllItems())
+	#myBackpack.putIn('marcin12', 3123)
+	#print(myBackpack.showAllItems())
+	#myBackpack.saveBackpack()
+	
 	myBackpack.loadBackpack('myBackpack')
-	myBackpack.putIn('marcin12', 3123)
-	#myBackpack.putIn('marcin', 3123)
-	#myBackpack.takeOut('marcin')
+	print(myBackpack.showAllItems())
+	myBackpack.putIn('marcin2', 3123)
+	#myBackpack.saveBackpack()
+
+	myBackpack.takeOut('marcin12')
+
 	print(myBackpack.showAllItems())
 	print(myBackpack.showName())
 	print(myBackpack.showId())
-	#myBackpack.saveBackpack()
+	myBackpack.saveBackpack()
 	
 		
